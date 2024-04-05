@@ -105,11 +105,11 @@ public class StorageFileService {
     }
 
     private User getUserByAuthToken(String authToken) {
-        if (authToken.startsWith("Bearer ")) {
-            final String authTokenWithoutBearer = authToken.split(" ")[1];
-            final String username = authenticationRepository.getUsernameByToken(authTokenWithoutBearer);
-            return userRepository.findByUsername(username);
+        if (!authToken.startsWith("Bearer ")) {
+            return null;
         }
-        return null;
+        String token = authToken.split(" ")[1];
+        String username = authenticationRepository.getUsernameByToken(token);
+        return userRepository.findByUsername(username);
     }
 }
